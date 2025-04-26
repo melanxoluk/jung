@@ -179,7 +179,7 @@
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
+      <!--<plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless.plugin.version}</version>
@@ -188,8 +188,8 @@
             <googleJavaFormat>
               <version>${google-java-format.version}</version>
             </googleJavaFormat>
-            <!-- TODO: Add a <licenseHeader> configuration to make all license headers in source
-                 files consistent -->
+            &lt;!&ndash; TODO: Add a <licenseHeader> configuration to make all license headers in source
+                 files consistent &ndash;&gt;
           </java>
         </configuration>
         <executions>
@@ -200,7 +200,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
   <reporting>
