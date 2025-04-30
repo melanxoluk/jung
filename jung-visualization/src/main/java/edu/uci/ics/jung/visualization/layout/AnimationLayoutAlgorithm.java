@@ -1,5 +1,6 @@
 package edu.uci.ics.jung.visualization.layout;
 
+import com.google.common.graph.Graph;
 import edu.uci.ics.jung.algorithms.util.IterativeContext;
 import edu.uci.ics.jung.layout.algorithms.AbstractIterativeLayoutAlgorithm;
 import edu.uci.ics.jung.layout.algorithms.LayoutAlgorithm;
@@ -37,13 +38,20 @@ public class AnimationLayoutAlgorithm<N> extends AbstractIterativeLayoutAlgorith
   public void visit(LayoutModel<N> layoutModel) {
     // save off the existing layoutModel
     this.layoutModel = layoutModel;
+    
     // create a LayoutModel to hold points for the transition
+    Graph<N> graph = visualizationServer.getModel().getNetwork().asGraph();
     this.transitionLayoutModel =
         LoadingCacheLayoutModel.<N>builder()
-            .setGraph(visualizationServer.getModel().getNetwork().asGraph())
+            .setGraph(graph)
             .setLayoutModel(layoutModel)
             .setInitializer(layoutModel)
             .build();
+
+    for (N node : graph.nodes()) {
+      transitionLayoutModel.lock(node, layoutModel.isLocked(node));
+    }
+    
     // start off the transitionLayoutModel with the endLayoutAlgorithm
     transitionLayoutModel.accept(endLayoutAlgorithm);
   }
@@ -54,6 +62,9 @@ public class AnimationLayoutAlgorithm<N> extends AbstractIterativeLayoutAlgorith
    */
   public void step() {
     for (N v : layoutModel.getGraph().nodes()) {
+      if (transitionLayoutModel.isLocked(v))
+        continue;
+      
       Point tp = layoutModel.apply(v);
       Point fp = transitionLayoutModel.apply(v);
       double dx = (fp.x - tp.x) / (count - counter);
@@ -65,7 +76,7 @@ public class AnimationLayoutAlgorithm<N> extends AbstractIterativeLayoutAlgorith
     if (counter >= count) {
       done = true;
       this.transitionLayoutModel.stopRelaxer();
-      this.visualizationServer.getModel().setLayoutAlgorithm(endLayoutAlgorithm);
+      // this.visualizationServer.getModel().setLayoutAlgorithm(endLayoutAlgorithm);
     }
   }
 
