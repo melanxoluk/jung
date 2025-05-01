@@ -177,6 +177,13 @@ public class BasicVisualizationServer<N, E> extends JPanel
     } catch (IOException e) {
       log.debug("Unable to read property files. Using defaults.");
     }
+
+    Timer animationTimer = new Timer(4, e -> {
+      // Интерполяция к целевой позиции
+      //currentX += (targetX - currentX) * easing;
+      repaint();
+    });
+    animationTimer.start();
   }
 
   private void createSpatialStuctures(VisualizationModel model, RenderContext renderContext) {
@@ -320,13 +327,13 @@ public class BasicVisualizationServer<N, E> extends JPanel
   }
 
   public void stateChanged(ChangeEvent e) {
-    repaint();
+    //repaint();
     fireStateChanged();
   }
 
   public void setRenderer(Renderer<N, E> r) {
     this.renderer = r;
-    repaint();
+    //repaint();
   }
 
   public Renderer<N, E> getRenderer() {
@@ -444,12 +451,12 @@ public class BasicVisualizationServer<N, E> extends JPanel
 
   @Override
   public void layoutChanged(LayoutEvent<N> evt) {
-    repaint();
+    //repaint();
   }
 
   @Override
   public void layoutChanged(LayoutNetworkEvent<N> evt) {
-    repaint();
+    //repaint();
   }
 
   /**
@@ -473,7 +480,7 @@ public class BasicVisualizationServer<N, E> extends JPanel
         return;
       }
       checkOffscreenImage(d);
-      repaint();
+      //repaint();
     }
   }
 
@@ -548,7 +555,7 @@ public class BasicVisualizationServer<N, E> extends JPanel
     this.pickedNodeState = pickedNodeState;
     this.renderContext.setPickedNodeState(pickedNodeState);
     if (pickEventListener == null) {
-      pickEventListener = e -> repaint();
+      //pickEventListener = e -> repaint();
     }
     pickedNodeState.addItemListener(pickEventListener);
   }
@@ -560,7 +567,7 @@ public class BasicVisualizationServer<N, E> extends JPanel
     this.pickedEdgeState = pickedEdgeState;
     this.renderContext.setPickedEdgeState(pickedEdgeState);
     if (pickEventListener == null) {
-      pickEventListener = e -> repaint();
+      //pickEventListener = e -> repaint();
     }
     pickedEdgeState.addItemListener(pickEventListener);
   }

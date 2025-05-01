@@ -179,10 +179,10 @@ public class FRLayoutAlgorithm<N> extends AbstractIterativeLayoutAlgorithm<N>
     double newXDisp = fvd.x / deltaLength * Math.min(deltaLength, temperature);
     double newYDisp = fvd.y / deltaLength * Math.min(deltaLength, temperature);
 
-    positionX += newXDisp;
-    positionY += newYDisp;
+    positionX += Math.signum(newXDisp) * Math.min(Math.abs(newXDisp), 20);
+    positionY += Math.signum(newYDisp) * Math.min(Math.abs(newYDisp), 20);
 
-    double borderWidth = layoutModel.getWidth() / 50.0;
+    /*double borderWidth = layoutModel.getWidth() / 50.0;
     if (positionX < borderWidth) {
       positionX = borderWidth + random.nextDouble() * borderWidth * 2.0;
     } else if (positionX > layoutModel.getWidth() - borderWidth * 2) {
@@ -193,7 +193,7 @@ public class FRLayoutAlgorithm<N> extends AbstractIterativeLayoutAlgorithm<N>
       positionY = borderWidth + random.nextDouble() * borderWidth * 2.0;
     } else if (positionY > layoutModel.getWidth() - borderWidth * 2) {
       positionY = layoutModel.getWidth() - borderWidth - random.nextDouble() * borderWidth * 2.0;
-    }
+    }*/
 
     layoutModel.set(node, positionX, positionY);
   }
